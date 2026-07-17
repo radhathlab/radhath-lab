@@ -521,13 +521,21 @@ document.getElementById("perfumeName").value = item.perfume || "";
 document.getElementById("bottleSize").value = item.size || "100";
 
 
-ingredients = item.ingredients.map(i => ({
+/* تنظيف المكونات قبل تحميل الوصفة */
+ingredients = [];
+
+
+item.ingredients.forEach(i => {
+
+ingredients.push({
 
 name: i.name,
 
 percent: i.percent
 
-}));
+});
+
+});
 
 
 renderIngredients();
