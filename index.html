@@ -126,3 +126,37 @@ Perfume Formula System
 
 </body>
 </html>
+
+<script>
+
+let formula = [];
+
+document.querySelectorAll(".card")[0].onclick = function(){
+    let name = prompt("اسم الخلطة / Formula Name");
+    let bottle = prompt("حجم الزجاجة بالمل: 10 / 30 / 50 / 100");
+
+    let perfume = prompt("اسم أول عطر");
+    let percent = prompt("النسبة %");
+
+    let ml = (Number(bottle) * Number(percent)) / 100;
+
+    alert(
+    "رذاذ LAB\n\n" +
+    "الخلطة: " + name +
+    "\nالعطر: " + perfume +
+    "\nالنسبة: " + percent + "%" +
+    "\nالكمية: " + ml + " ml"
+    );
+
+    formula.push({
+        name:name,
+        bottle:bottle,
+        perfume:perfume,
+        percent:percent,
+        ml:ml
+    });
+
+    localStorage.setItem("radhath_formulas", JSON.stringify(formula));
+}
+
+</script>
