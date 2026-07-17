@@ -1,141 +1,89 @@
 const RadhathLAB = {
 
-    formulas: [],
+formulas: [],
 
 
-    createFormula: function(name, size, ingredients){
+createFormula:function(name,size,ingredients){
 
 
-        let total = ingredients.reduce((sum,item)=>{
+let total = ingredients.reduce((sum,item)=>{
+return sum + Number(item.percent);
+},0);
 
-            return sum + Number(item.percent);
 
-        },0);
 
+if(total !== 100){
 
+return {
+error:"المجموع يجب أن يكون 100% - الحالي: "+total+"%"
+};
 
-        if(total !== 100){
+}
 
-            return {
 
-                error:
-                "النسبة الحالية " + total + "% - يجب أن تكون 100%"
 
-            };
+let formula = {
 
-        }
+id:"RDH-"+Date.now(),
 
+name:name,
 
+size:size,
 
-        let formula = {
+ingredients:ingredients.map(item=>({
 
+name:item.name,
 
-            id:
-            "RDH-" + Date.now(),
+percent:Number(item.percent),
 
+ml:(Number(size)*Number(item.percent))/100
 
-            name:
-            name || "بدون اسم",
+})),
 
+date:new Date().toLocaleDateString()
 
-            size:
-            size,
+};
 
 
-            ingredients:
 
-            ingredients.map(item=>{
+this.formulas.push(formula);
 
 
-                return {
+localStorage.setItem(
+"radhath_formulas",
+JSON.stringify(this.formulas)
+);
 
 
-                    name:item.name,
 
+console.log("Saved:", this.formulas);
 
-                    percent:Number(item.percent),
 
 
-                    ml:
-                    (Number(size) * Number(item.percent)) / 100
+return formula;
 
 
-                };
+},
 
 
-            }),
 
+loadFormulas:function(){
 
-            date:
-            new Date().toLocaleDateString()
 
+let saved = localStorage.getItem("radhath_formulas");
 
-        };
 
+if(saved){
 
+this.formulas = JSON.parse(saved);
 
+}
 
-        this.formulas.push(formula);
 
+return this.formulas;
 
 
-        this.saveFormulas();
-
-
-
-        return formula;
-
-
-
-    },
-
-
-
-
-
-    saveFormulas:function(){
-
-
-        localStorage.setItem(
-
-            "radhath_formulas",
-
-            JSON.stringify(this.formulas)
-
-        );
-
-
-    },
-
-
-
-
-
-    loadFormulas:function(){
-
-
-
-        let saved =
-
-        localStorage.getItem("radhath_formulas");
-
-
-
-        if(saved){
-
-
-            this.formulas = JSON.parse(saved);
-
-
-        }
-
-
-
-        return this.formulas;
-
-
-
-    }
+}
 
 
 
@@ -143,10 +91,6 @@ const RadhathLAB = {
 
 
 
-// تحميل البيانات عند تشغيل البرنامج
-
 RadhathLAB.loadFormulas();
 
-
-
-console.log("Radhath LAB System Ready");
+console.log("Radhath LAB Ready");
