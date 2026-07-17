@@ -1,162 +1,150 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>رذاذ LAB</title>
+<title>Radhath LAB</title>
 
 <style>
-body {
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:#050505;
-    color:white;
+
+*{
+box-sizing:border-box;
 }
 
-.container {
-    max-width:500px;
-    margin:auto;
-    padding:25px;
-    text-align:center;
+body{
+margin:0;
+background:#050505;
+color:white;
+font-family:Arial,sans-serif;
 }
 
-.logo {
-    margin-top:40px;
-    font-size:38px;
-    font-weight:bold;
-    color:#d4af37;
+.app{
+max-width:500px;
+margin:auto;
+padding:25px;
+text-align:center;
 }
 
-.subtitle {
-    color:#aaa;
-    margin-bottom:50px;
+.logo{
+margin-top:50px;
+font-size:42px;
+font-weight:bold;
+color:#d4af37;
+letter-spacing:2px;
 }
 
-.card {
-    background:#111;
-    border:1px solid #d4af37;
-    border-radius:20px;
-    padding:20px;
-    margin:20px 0;
-    cursor:pointer;
-    transition:.3s;
+.lab{
+font-size:18px;
+color:#aaa;
+margin-top:10px;
 }
 
-.card:hover {
-    transform:scale(1.03);
+.line{
+height:1px;
+background:#d4af37;
+margin:40px 0;
 }
 
-.icon {
-    font-size:30px;
+.menu{
+background:#111;
+border:1px solid #d4af37;
+border-radius:18px;
+padding:20px;
+margin:20px 0;
+font-size:20px;
+cursor:pointer;
 }
 
-button {
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border:none;
-    border-radius:12px;
-    background:#d4af37;
-    color:#000;
-    font-size:18px;
-    font-weight:bold;
+.menu:hover{
+background:#1a1a1a;
 }
 
-.lang {
-    margin-top:40px;
-    color:#d4af37;
+.small{
+color:#aaa;
+font-size:14px;
+margin-top:40px;
 }
 
-.gold {
-    color:#d4af37;
+.gold{
+color:#d4af37;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<div class="container">
+
+<div class="app">
+
 
 <div class="logo">
 رذاذ LAB
 </div>
 
-<div class="subtitle">
+<div class="lab">
 Perfume Formula System
 </div>
 
 
-<div class="card">
-<div class="icon">🧪</div>
-<h2>ابدأ تركيب خلطة</h2>
-<p>Create New Formula</p>
+<div class="line"></div>
+
+
+<div class="menu">
+🧪
+<br>
+إنشاء تركيبة
+<br>
+<span class="small">
+Create Formula
+</span>
 </div>
 
 
-<div class="card">
-<div class="icon">📚</div>
-<h2>وصفاتي</h2>
-<p>Formula Library</p>
+<div class="menu">
+📚
+<br>
+الوصفات المحفوظة
+<br>
+<span class="small">
+Saved Formulas
+</span>
 </div>
 
 
-<div class="card">
-<div class="icon">🧮</div>
-<h2>الحاسبة</h2>
-<p>Calculator</p>
+<div class="menu">
+⚗️
+<br>
+مختبر الرائحة
+<br>
+<span class="small">
+Scent Laboratory
+</span>
 </div>
 
 
-<div class="card">
-<div class="icon">⚙</div>
-<h2>الإعدادات</h2>
-<p>Settings</p>
+<div class="menu">
+⚙️
+<br>
+الإعدادات
+<br>
+<span class="small">
+Settings
+</span>
 </div>
 
 
-<div class="lang">
-🇸🇦 العربية &nbsp; | &nbsp; 🇬🇧 English
+<div class="small">
+Radhath LAB © 2026
 </div>
 
 
 </div>
+
 
 </body>
 </html>
-
-<script>
-
-let formula = [];
-
-document.querySelectorAll(".card")[0].onclick = function(){
-    let name = prompt("اسم الخلطة / Formula Name");
-    let bottle = prompt("حجم الزجاجة بالمل: 10 / 30 / 50 / 100");
-
-    let perfume = prompt("اسم أول عطر");
-    let percent = prompt("النسبة %");
-
-    let ml = (Number(bottle) * Number(percent)) / 100;
-
-    alert(
-    "رذاذ LAB\n\n" +
-    "الخلطة: " + name +
-    "\nالعطر: " + perfume +
-    "\nالنسبة: " + percent + "%" +
-    "\nالكمية: " + ml + " ml"
-    );
-
-    formula.push({
-        name:name,
-        bottle:bottle,
-        perfume:perfume,
-        percent:percent,
-        ml:ml
-    });
-
-    localStorage.setItem("radhath_formulas", JSON.stringify(formula));
-}
-
-</script>
