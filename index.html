@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,7 +10,6 @@
 <link rel="stylesheet" href="style.css">
 
 </head>
-
 
 <body>
 
@@ -28,7 +26,7 @@ Perfume Formula System
 
 <div class="card">
 
-<h2>🧪 مختبر التركيب</h2>
+<h2>🧪 مختبر العطر</h2>
 
 <input id="formulaName" placeholder="اسم التركيبة">
 
@@ -41,16 +39,13 @@ Perfume Formula System
 </select>
 
 
-<hr>
-
-
 <input id="ingredientName" placeholder="اسم العطر">
 
 <input id="ingredientPercent" type="number" placeholder="النسبة %">
 
 
 <button onclick="addIngredient()">
-إضافة المكون
+إضافة عطر
 </button>
 
 
@@ -72,7 +67,6 @@ Perfume Formula System
 </div>
 
 
-
 <div class="card">
 
 <h2>📚 الوصفات المحفوظة</h2>
@@ -84,14 +78,7 @@ Perfume Formula System
 </div>
 
 
-<div class="footer">
-Radhath LAB © 2026
 </div>
-
-
-</div>
-
-
 
 
 <script src="app.js"></script>
@@ -104,30 +91,20 @@ let ingredients=[];
 
 function addIngredient(){
 
-let name =
-document.getElementById("ingredientName").value;
+let name=document.getElementById("ingredientName").value;
 
-
-let percent =
-Number(document.getElementById("ingredientPercent").value);
-
+let percent=Number(document.getElementById("ingredientPercent").value);
 
 
 if(!name || !percent){
-
-alert("اكتب اسم العطر والنسبة");
-
+alert("أدخل اسم العطر والنسبة");
 return;
-
 }
 
 
 ingredients.push({
-
 name:name,
-
 percent:percent
-
 });
 
 
@@ -139,20 +116,16 @@ showIngredients();
 
 function showIngredients(){
 
-let box =
-document.getElementById("ingredients");
+let box=document.getElementById("ingredients");
 
-
-let total = 0;
-
+let total=0;
 
 box.innerHTML="";
 
 
 ingredients.forEach(item=>{
 
-total += Number(item.percent);
-
+total += item.percent;
 
 box.innerHTML +=
 item.name+" - "+item.percent+"%<br>";
@@ -160,7 +133,7 @@ item.name+" - "+item.percent+"%<br>";
 });
 
 
-document.getElementById("total").innerHTML =
+document.getElementById("total").innerHTML=
 "المجموع: "+total+"%";
 
 }
@@ -169,20 +142,15 @@ document.getElementById("total").innerHTML =
 
 function saveFormula(){
 
-let name =
-document.getElementById("formulaName").value;
-
-
-let size =
-document.getElementById("bottleSize").value;
-
-
-
 let result =
 RadhathLAB.createFormula(
-name,
-size,
+
+document.getElementById("formulaName").value,
+
+document.getElementById("bottleSize").value,
+
 ingredients
+
 );
 
 
@@ -196,70 +164,58 @@ return;
 }
 
 
+displayFormula(result);
 
-let saved =
-document.getElementById("saved");
+alert("تم حفظ التركيبة بنجاح");
+
+}
+
+
+
+function displayFormula(result){
+
+let saved=document.getElementById("saved");
+
+
+if(saved.innerHTML=="لا توجد وصفات"){
+saved.innerHTML="";
+}
 
 
 saved.innerHTML +=
 `
 <div class="formula-box">
+
 <h3>${result.name}</h3>
+
 الحجم: ${result.size} ml
+
 <br><br>
+
 ${result.ingredients.map(i=>
 i.name+" : "+i.ml+" ml"
 ).join("<br>")}
 
 </div>
 `;
-
-
-
-alert("تم حفظ التركيبة بنجاح");
-
 
 }
 
 
-window.onload = function(){
 
-let savedBox = document.getElementById("saved");
+window.onload=function(){
 
-let formulas = RadhathLAB.loadFormulas();
+let formulas=RadhathLAB.loadFormulas();
 
+formulas.forEach(formula=>{
 
-if(formulas.length > 0){
-
-savedBox.innerHTML="";
-
-
-formulas.forEach(result=>{
-
-
-savedBox.innerHTML +=
-`
-<div class="formula-box">
-
-<h3>${result.name}</h3>
-
-الحجم: ${result.size} ml
-
-<br><br>
-
-${result.ingredients.map(i=>
-i.name+" : "+i.ml+" ml"
-).join("<br>")}
-
-</div>
-`;
+displayFormula(formula);
 
 });
 
+};
 
-}
 
-}
 </script>
 
 
