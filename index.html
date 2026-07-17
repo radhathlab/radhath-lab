@@ -4,9 +4,10 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Radhath LAB - Perfume Formula System</title>
+<title>Radhath LAB</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -20,19 +21,19 @@
 
 
 <div class="logo">
-رذاذ LAB
+🧪 رذاذ LAB
 </div>
 
 
 <div class="subtitle">
-Premium Perfume Formula System
+Perfume Formula System
 </div>
 
 
 
 <div class="card">
 
-<h2>🧪 مختبر العطر</h2>
+<h2>إنشاء تركيبة جديدة</h2>
 
 
 <input id="formulaName" placeholder="اسم التركيبة">
@@ -41,7 +42,7 @@ Premium Perfume Formula System
 <input id="clientName" placeholder="اسم العميل">
 
 
-<input id="perfumeName" placeholder="اسم العطر النهائي">
+<input id="perfumeName" placeholder="اسم العطر">
 
 
 
@@ -59,17 +60,19 @@ Premium Perfume Formula System
 
 
 
+<h3 class="gold">
+المكونات
+</h3>
+
+
 <input id="ingredientName" placeholder="اسم المكون">
 
 
 <input id="ingredientPercent" type="number" placeholder="النسبة %">
 
 
-
 <button onclick="addIngredient()">
-
-إضافة مكون
-
++ إضافة مكون
 </button>
 
 
@@ -83,27 +86,18 @@ Premium Perfume Formula System
 
 
 <div id="total" class="gold">
-
 المجموع: 0%
-
 </div>
 
 
 
 <button onclick="saveFormula()">
-
-حفظ التركيبة
-
+💾 حفظ التركيبة
 </button>
 
 
 </div>
-
-
-
-
 <div class="card">
-
 
 <h2>⭐ تقييم العطر</h2>
 
@@ -117,7 +111,6 @@ Premium Perfume Formula System
 <option>ثبات خفيف</option>
 
 </select>
-
 
 
 <select id="projection">
@@ -138,7 +131,6 @@ Premium Perfume Formula System
 
 <div class="card">
 
-
 <h2>📚 الوصفات المحفوظة</h2>
 
 
@@ -154,6 +146,10 @@ Premium Perfume Formula System
 
 
 </div>
+
+
+
+
 <script src="app.js"></script>
 
 
@@ -167,12 +163,9 @@ let ingredients=[];
 function addIngredient(){
 
 
-let name =
-document.getElementById("ingredientName").value;
+let name=document.getElementById("ingredientName").value;
 
-
-let percent =
-Number(document.getElementById("ingredientPercent").value);
+let percent=Number(document.getElementById("ingredientPercent").value);
 
 
 
@@ -212,9 +205,7 @@ document.getElementById("ingredientPercent").value="";
 function showIngredients(){
 
 
-let box =
-document.getElementById("ingredients");
-
+let box=document.getElementById("ingredients");
 
 box.innerHTML="";
 
@@ -226,14 +217,12 @@ let total=0;
 ingredients.forEach(item=>{
 
 
-total += Number(item.percent);
-
+total += item.percent;
 
 
 box.innerHTML +=
 
 item.name+" - "+item.percent+"%<br>";
-
 
 
 });
@@ -250,14 +239,11 @@ document.getElementById("total").innerHTML=
 
 
 
-
 function saveFormula(){
 
 
 
-let formula =
-
-RadhathLAB.createFormula(
+let formula = RadhathLAB.createFormula(
 
 document.getElementById("formulaName").value,
 
@@ -271,7 +257,6 @@ ingredients
 
 if(formula.error){
 
-
 alert(formula.error);
 
 return;
@@ -280,28 +265,13 @@ return;
 
 
 
-formula.client =
+formula.client=document.getElementById("clientName").value;
 
-document.getElementById("clientName").value;
+formula.perfume=document.getElementById("perfumeName").value;
 
+formula.strength=document.getElementById("strength").value;
 
-
-formula.perfume =
-
-document.getElementById("perfumeName").value;
-
-
-
-formula.strength =
-
-document.getElementById("strength").value;
-
-
-
-formula.projection =
-
-document.getElementById("projection").value;
-
+formula.projection=document.getElementById("projection").value;
 
 
 
@@ -327,17 +297,15 @@ alert("تم حفظ التركيبة بنجاح");
 
 
 
+
 function displayFormula(item){
 
 
 
-let saved =
-
-document.getElementById("saved");
+let saved=document.getElementById("saved");
 
 
-
-if(saved.innerHTML.includes("لا توجد")){
+if(saved.innerHTML.includes("لا توجد وصفات")){
 
 saved.innerHTML="";
 
@@ -345,74 +313,54 @@ saved.innerHTML="";
 
 
 
-saved.innerHTML +=
-
-
-`
+saved.innerHTML += `
 
 <div class="formula-box">
 
 
-<h2 class="gold">
-Radhath LAB
-</h2>
+<h2 class="gold">Radhath LAB</h2>
 
 
 <hr>
 
 
-<h3>
-${item.name}
-</h3>
+<strong>${item.name}</strong>
+
+<br><br>
 
 
 العطر:
-
 ${item.perfume || "-"}
 
-
-<br><br>
+<br>
 
 
 العميل:
-
 ${item.client || "-"}
 
-
-<br><br>
+<br>
 
 
 الحجم:
-
 ${item.size} ml
-
 
 <br><br>
 
 
 الثبات:
-
 ${item.strength}
-
 
 <br>
 
-
 الفوحان:
-
 ${item.projection}
-
 
 <br><br>
 
 
-<strong>
 المكونات:
-</strong>
-
 
 <br>
-
 
 ${item.ingredients.map(i=>
 
@@ -421,33 +369,18 @@ i.name+" : "+i.ml+" ml"
 ).join("<br>")}
 
 
-
 <br><br>
-
 
 رقم الخلطة:
 
 ${item.id}
 
 
-<br>
-
-
-التاريخ:
-
-${item.date}
-
-
-
 </div>
-
 
 `;
 
-
-
 }
-
 
 
 
@@ -455,18 +388,12 @@ ${item.date}
 window.onload=function(){
 
 
-
-let old =
-
-RadhathLAB.loadFormulas();
-
+let old=RadhathLAB.loadFormulas();
 
 
 old.forEach(item=>{
 
-
 displayFormula(item);
-
 
 });
 
