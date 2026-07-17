@@ -1,96 +1,264 @@
 const RadhathLAB = {
 
-formulas: [],
+    formulas: [],
 
 
-createFormula:function(name,size,ingredients){
+    loadFormulas: function(){
+
+        let saved = localStorage.getItem("radhath_formulas");
 
 
-let total = ingredients.reduce((sum,item)=>{
-return sum + Number(item.percent);
-},0);
+        if(saved){
+
+            this.formulas = JSON.parse(saved);
+
+        }
+
+
+        return this.formulas;
+
+    },
+
+
+    saveFormulas: function(){
+
+        localStorage.setItem(
+            "radhath_formulas",
+            JSON.stringify(this.formulas)
+        );
+
+    },
 
 
 
-if(total !== 100){
+    createFormula: function(name, size, ingredients){
 
-return {
-error:"المجموع يجب أن يكون 100% - الحالي: "+total+"%"
+
+        let total = 0;
+
+
+        ingredients.forEach(item=>{
+
+            total += Number(item.percent);
+
+        });
+
+
+
+        if(total !== 100){
+
+            return {
+
+                error:"النسبة يجب أن تكون 100%"
+
+            };
+
+        }
+
+
+
+        let formula = {
+
+
+            id: Date.now(),
+
+
+            name:name,
+
+
+            size:Number(size),
+
+
+            ingredients:ingredients,
+
+
+            date:new Date().toLocaleDateString(),
+
+
+            cost:0,
+
+
+            sellPrice:0,
+
+
+            profit:0
+
+
+        };
+
+
+
+        this.formulas.push(formula);
+
+
+        this.saveFormulas();
+
+
+
+        return formula;
+
+
+    },
+
+
+
+    calculateCost: function(formula){
+
+
+        let totalCost = 0;
+
+
+        formula.ingredients.forEach(item=>{
+
+
+            if(item.price){
+
+
+                let mlCost = Number(item.price) / 100;
+
+
+                totalCost += mlCost * Number(item.ml || 0);
+
+
+            }
+
+
+        });
+
+
+
+        formula.cost = totalCost;
+
+
+        formula.profit =
+
+        Number(formula.sellPrice || 0)
+
+        - totalCost;
+
+
+
+        this.saveFormulas();
+
+
+        return totalCost;
+
+
+    }
+
+};
+RadhathLAB.updateIngredientPrice = function(formulaId, ingredientName, price){
+
+
+    let formula = this.formulas.find(
+        f => f.id === formulaId
+    );
+
+
+    if(!formula){
+
+        return false;
+
+    }
+
+
+
+    let ingredient = formula.ingredients.find(
+
+        i => i.name === ingredientName
+
+    );
+
+
+
+    if(ingredient){
+
+
+        ingredient.price = Number(price);
+
+
+    }
+
+
+
+    this.calculateCost(formula);
+
+
+    return true;
+
+
 };
 
-}
 
 
 
-let formula = {
+RadhathLAB.setSellingPrice = function(formulaId, price){
 
-id:"RDH-"+Date.now(),
 
-name:name,
+    let formula = this.formulas.find(
 
-size:size,
+        f => f.id === formulaId
 
-ingredients:ingredients.map(item=>({
-
-name:item.name,
-
-percent:Number(item.percent),
-
-ml:(Number(size)*Number(item.percent))/100
-
-})),
-
-date:new Date().toLocaleDateString()
-
-};
+    );
 
 
 
-this.formulas.push(formula);
+    if(formula){
 
 
-localStorage.setItem(
-"radhath_formulas",
-JSON.stringify(this.formulas)
-);
+        formula.sellPrice = Number(price);
 
 
-
-console.log("Saved:", this.formulas);
-
+        this.calculateCost(formula);
 
 
-return formula;
+        return true;
 
-
-},
+    }
 
 
 
-loadFormulas:function(){
-
-
-let saved = localStorage.getItem("radhath_formulas");
-
-
-if(saved){
-
-this.formulas = JSON.parse(saved);
-
-}
-
-
-return this.formulas;
-
-
-}
-
+    return false;
 
 
 };
 
 
+
+
+RadhathLAB.getFormulaReport = function(formula){
+
+
+    return {
+
+
+        name: formula.name,
+
+
+        size: formula.size,
+
+
+        cost: formula.cost || 0,
+
+
+        sellPrice: formula.sellPrice || 0,
+
+
+        profit: formula.profit || 0
+
+
+    };
+
+
+};
+
+
+
+
+// تشغيل النظام وتحميل الوصفات القديمة
 
 RadhathLAB.loadFormulas();
 
-console.log("Radhath LAB Ready");
+
+
+console.log("Radhath LAB Cost System Ready");
