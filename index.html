@@ -133,10 +133,11 @@
 </select>
 
 
-</section>
 <section class="card">
 
 <h2>📚 الوصفات المحفوظة</h2>
+
+<input id="searchBox" placeholder="🔍 ابحث عن وصفة أو عميل أو عطر" oninput="searchFormulas()">
 
 
 <div id="saved">
@@ -464,7 +465,34 @@ alert("تم نسخ الوصفة");
 }
 
 
+function searchFormulas(){
 
+let text = document.getElementById("searchBox").value.toLowerCase();
+
+let saved = document.getElementById("saved");
+
+saved.innerHTML="";
+
+
+let old = RadhathLAB.loadFormulas();
+
+
+old.filter(item =>
+
+(item.name && item.name.toLowerCase().includes(text)) ||
+
+(item.client && item.client.toLowerCase().includes(text)) ||
+
+(item.perfume && item.perfume.toLowerCase().includes(text))
+
+).forEach(item => {
+
+showFormula(item);
+
+});
+
+
+}
 
 
 window.onload=function(){
