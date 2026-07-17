@@ -4,31 +4,35 @@ const RadhathLAB = {
 
     createFormula: function(name, bottleSize, ingredients){
 
-        let total = 0;
+        let total = ingredients.reduce((sum,item)=>{
+            return sum + Number(item.percent);
+        },0);
 
-        ingredients.forEach(item=>{
-            total += Number(item.percent);
-        });
 
         if(total !== 100){
+
             return {
-                error: "النسب يجب أن تكون 100%"
+                error:"النسبة الحالية " + total + "% - يجب أن تكون 100%"
             };
+
         }
 
-        let result = [];
 
-        ingredients.forEach(item=>{
+        let result = ingredients.map(item=>{
 
-            let ml = (Number(bottleSize) * Number(item.percent)) / 100;
+            return {
 
-            result.push({
                 name:item.name,
-                percent:item.percent,
-                ml:ml
-            });
+
+                percent:Number(item.percent),
+
+                ml:
+                (Number(bottleSize) * Number(item.percent)) / 100
+
+            };
 
         });
+
 
 
         let formula = {
@@ -48,6 +52,7 @@ const RadhathLAB = {
 
         this.formulas.push(formula);
 
+
         localStorage.setItem(
             "radhath_formulas",
             JSON.stringify(this.formulas)
@@ -61,19 +66,24 @@ const RadhathLAB = {
 
     loadFormulas:function(){
 
-        let saved = localStorage.getItem("radhath_formulas");
+        let saved =
+        localStorage.getItem("radhath_formulas");
+
 
         if(saved){
 
-            this.formulas = JSON.parse(saved);
+            this.formulas =
+            JSON.parse(saved);
 
         }
+
 
         return this.formulas;
 
     }
 
+
 };
 
 
-console.log("Radhath LAB Engine Ready");
+console.log("Radhath LAB v1.1 Ready");
