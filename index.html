@@ -15,7 +15,6 @@
 
 <body>
 
-
 <div class="app">
 
 <div class="logo">
@@ -29,9 +28,10 @@ Perfume Formula System
 
 <div class="card">
 
-<h2>🧪 إنشاء تركيبة</h2>
+<h2>🧪 مختبر التركيب</h2>
 
 <input id="formulaName" placeholder="اسم التركيبة">
+
 
 <select id="bottleSize">
 <option value="10">10 ml</option>
@@ -41,17 +41,27 @@ Perfume Formula System
 </select>
 
 
+<hr>
+
+
 <input id="ingredientName" placeholder="اسم العطر">
 
-<input id="ingredientPercent" placeholder="النسبة %">
+<input id="ingredientPercent" type="number" placeholder="النسبة %">
 
 
 <button onclick="addIngredient()">
-إضافة العطر
+إضافة المكون
 </button>
 
 
-<div id="ingredients" class="formula-box"></div>
+<div id="ingredients" class="formula-box">
+لا يوجد مكونات
+</div>
+
+
+<div id="total" class="gold">
+المجموع: 0%
+</div>
 
 
 <button onclick="saveFormula()">
@@ -67,7 +77,9 @@ Perfume Formula System
 
 <h2>📚 الوصفات المحفوظة</h2>
 
-<div id="saved"></div>
+<div id="saved">
+لا توجد وصفات
+</div>
 
 </div>
 
@@ -81,6 +93,7 @@ Radhath LAB © 2026
 
 
 
+
 <script src="app.js"></script>
 
 
@@ -91,14 +104,28 @@ let ingredients=[];
 
 function addIngredient(){
 
-let name=document.getElementById("ingredientName").value;
+let name =
+document.getElementById("ingredientName").value;
 
-let percent=document.getElementById("ingredientPercent").value;
+
+let percent =
+Number(document.getElementById("ingredientPercent").value);
+
+
+
+if(!name || !percent){
+
+alert("اكتب اسم العطر والنسبة");
+
+return;
+
+}
 
 
 ingredients.push({
 
 name:name,
+
 percent:percent
 
 });
@@ -112,18 +139,29 @@ showIngredients();
 
 function showIngredients(){
 
-let box=document.getElementById("ingredients");
+let box =
+document.getElementById("ingredients");
+
+
+let total = 0;
+
 
 box.innerHTML="";
 
 
-ingredients.forEach(i=>{
+ingredients.forEach(item=>{
 
-box.innerHTML += 
-i.name+" - "+i.percent+"%<br>";
+total += Number(item.percent);
+
+
+box.innerHTML +=
+item.name+" - "+item.percent+"%<br>";
 
 });
 
+
+document.getElementById("total").innerHTML =
+"المجموع: "+total+"%";
 
 }
 
@@ -131,22 +169,58 @@ i.name+" - "+i.percent+"%<br>";
 
 function saveFormula(){
 
-let name=document.getElementById("formulaName").value;
+let name =
+document.getElementById("formulaName").value;
 
-let size=document.getElementById("bottleSize").value;
+
+let size =
+document.getElementById("bottleSize").value;
 
 
-let result=RadhathLAB.createFormula(
+
+let result =
+RadhathLAB.createFormula(
 name,
 size,
 ingredients
 );
 
 
-alert(JSON.stringify(result,null,2));
+
+if(result.error){
+
+alert(result.error);
+
+return;
+
+}
+
+
+
+let saved =
+document.getElementById("saved");
+
+
+saved.innerHTML +=
+`
+<div class="formula-box">
+<h3>${result.name}</h3>
+الحجم: ${result.size} ml
+<br><br>
+${result.ingredients.map(i=>
+i.name+" : "+i.ml+" ml"
+).join("<br>")}
+
+</div>
+`;
+
+
+
+alert("تم حفظ التركيبة بنجاح");
 
 
 }
+
 
 
 </script>
