@@ -222,7 +222,44 @@ alert("تم حفظ التركيبة بنجاح");
 }
 
 
+window.onload = function(){
 
+let savedBox = document.getElementById("saved");
+
+let formulas = RadhathLAB.loadFormulas();
+
+
+if(formulas.length > 0){
+
+savedBox.innerHTML="";
+
+
+formulas.forEach(result=>{
+
+
+savedBox.innerHTML +=
+`
+<div class="formula-box">
+
+<h3>${result.name}</h3>
+
+الحجم: ${result.size} ml
+
+<br><br>
+
+${result.ingredients.map(i=>
+i.name+" : "+i.ml+" ml"
+).join("<br>")}
+
+</div>
+`;
+
+});
+
+
+}
+
+}
 </script>
 
 
