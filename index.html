@@ -496,7 +496,53 @@ showFormula(item);
 
 }
 
+function editFormula(name){
 
+let formulas = RadhathLAB.loadFormulas();
+
+let item = formulas.find(f => f.name === name);
+
+
+if(!item){
+
+alert("لم يتم العثور على الوصفة");
+
+return;
+
+}
+
+
+document.getElementById("formulaName").value = item.name || "";
+
+document.getElementById("clientName").value = item.client || "";
+
+document.getElementById("perfumeName").value = item.perfume || "";
+
+document.getElementById("bottleSize").value = item.size || "100";
+
+
+ingredients = item.ingredients.map(i => ({
+
+name: i.name,
+
+percent: i.percent
+
+}));
+
+
+renderIngredients();
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+
+}
 window.onload=function(){
 
 
