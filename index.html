@@ -247,10 +247,7 @@ document.getElementById("total").innerHTML =
 
 
 
-
 function saveFormula(){
-
-
 
 let formula = RadhathLAB.createFormula(
 
@@ -263,7 +260,6 @@ ingredients
 );
 
 
-
 if(formula.error){
 
 alert(formula.error);
@@ -273,20 +269,16 @@ return;
 }
 
 
-
 formula.client =
 document.getElementById("clientName").value;
-
 
 
 formula.perfume =
 document.getElementById("perfumeName").value;
 
 
-
 formula.strength =
 document.getElementById("strength").value;
-
 
 
 formula.projection =
@@ -294,22 +286,48 @@ document.getElementById("projection").value;
 
 
 
+let formulas = RadhathLAB.loadFormulas();
+
+
+let oldIndex = formulas.findIndex(f => f.name === formula.name);
+
+
+if(oldIndex !== -1){
+
+formulas[oldIndex] = formula;
+
+}else{
+
+formulas.push(formula);
+
+}
+
+
+
+RadhathLAB.formulas = formulas;
+
 
 localStorage.setItem(
 
 "radhath_formulas",
 
-JSON.stringify(RadhathLAB.formulas)
+JSON.stringify(formulas)
 
 );
 
 
 
-showFormula(formula);
+document.getElementById("saved").innerHTML="";
 
 
+formulas.forEach(item=>{
 
-alert("تم حفظ التركيبة بنجاح");
+showFormula(item);
+
+});
+
+
+alert("تم حفظ التعديل بنجاح");
 
 
 }
